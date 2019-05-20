@@ -11,15 +11,18 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.RelativeLayout;
 
+import com.example.tongzhang.nbbutton.ui.AnimatorButton;
 import com.example.tongzhang.nbbutton.ui.NbButton;
 import com.example.tongzhang.nbbutton.ui.OneNbButton;
 
 public class MainActivity extends AppCompatActivity {
     private NbButton button;
     private OneNbButton buttonOne;
+    private AnimatorButton buttonTwo;
     private RelativeLayout rlContent;
     private Handler handler;
     private Handler handlerOne;
+    private Handler handlerTwo;
     private Animator animator;
 
     @Override
@@ -28,10 +31,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.button_test);
         buttonOne = findViewById(R.id.button_test_one);
+        buttonTwo = findViewById(R.id.button_test_two);
         rlContent = findViewById(R.id.rl_content);
 
         rlContent.getBackground().setAlpha(0);
         handlerOne = new Handler();
+        handlerTwo = new Handler();
         handler = new Handler();
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +62,23 @@ public class MainActivity extends AppCompatActivity {
                 buttonOne.startAnim();
 
                 handlerOne.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        //跳转
+//                            gotoNew();
+                    }
+                }, 3000);
+
+            }
+        });
+
+        buttonTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonTwo.startAnim();
+
+                handlerTwo.postDelayed(new Runnable() {
                     @Override
                     public void run() {
 

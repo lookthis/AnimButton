@@ -14,6 +14,16 @@
         android:layout_alignParentBottom="true"
         android:background="@color/cutePink">
 
+        <com.example.tongzhang.nbbutton.ui.AnimatorButton
+            android:id="@+id/button_test_two"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="400dp"
+            android:text="登陆"
+            android:textColor="#fff" />
+
         <com.example.tongzhang.nbbutton.ui.OneNbButton
             android:id="@+id/button_test_one"
             android:layout_width="50dp"
@@ -33,6 +43,12 @@
             android:layout_marginBottom="100dp"
             android:text="登陆"
             android:textColor="#fff" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
 
 
     </RelativeLayout>
