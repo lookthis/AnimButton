@@ -69,7 +69,7 @@ public class ButtonActivity extends AppCompatActivity {
             endF = 1.0f;
 
             startRF = 45.0f;
-            endRF = 0.0f;
+            endRF = 90.0f;
         }
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(imageView2, "scaleX", startF, endF);
         ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(imageView2, "scaleY", startF, endF);
@@ -83,7 +83,6 @@ public class ButtonActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (isFirst) {
-//                    AnimationHelper.show(linearLayout,dip2px(50) / 2f, new AnimationHelper.AnimatorEndListener() {
                     AnimationHelper.show(linearLayout, relativeLayout, dip2px(50) / 2f, 300, new AnimationHelper.AnimatorEndListener() {
                         @Override
                         public void onEnd() {
