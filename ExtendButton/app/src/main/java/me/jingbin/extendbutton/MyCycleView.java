@@ -5,12 +5,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class MyCycleView extends View {
@@ -26,7 +29,7 @@ public class MyCycleView extends View {
     Matrix matrix = new Matrix();
     //旋转动画的角度
     int degrees = 0;
-    private  Paint paint;
+    private Paint paint;
 
     //-----------旋转动画-----------
     Handler mHandler = new Handler();
@@ -34,11 +37,15 @@ public class MyCycleView extends View {
         @Override
         public void run() {
             matrix.postRotate(degrees++, radius / 2, radius / 2);
+//            matrix.postRotate(degrees++, radius / 4, radius / 4);
+//            matrix.setRotate(degrees++, radius / 2, radius / 2);
+//            matrix.postRotate(degrees++);
             //重绘
             invalidate();
             mHandler.postDelayed(runnable, 50);
         }
     };
+    private Rect mRect;
 
     public MyCycleView(Context context) {
         super(context);
@@ -61,20 +68,36 @@ public class MyCycleView extends View {
         //开始旋转
         mHandler.post(runnable);
 
-         paint = new Paint();
+        paint = new Paint();
+        mRect = new Rect();
         paint.setColor(getResources().getColor(R.color.colorAccent));
-        paint.setStrokeWidth(4);
-        paint.setStyle(Paint.Style.STROKE);
+//        paint.setStrokeWidth(4);
+        paint.setAntiAlias(true);//抗锯齿
+//        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL);
 //        paint.setTextSize(2);
 
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //测量整个View的宽和高
-        mWidth = measuredWidth(widthMeasureSpec);
-        mHeight = measuredHeight(heightMeasureSpec);
+//        mWidth = measuredWidth(widthMeasureSpec);
+//        mHeight = measuredHeight(heightMeasureSpec);
+//        setMeasuredDimension(mWidth, mHeight);
+
+
+        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
+        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+
+        if (modeWidth == MeasureSpec.EXACTLY) {
+            mWidth = sizeWidth;
+        } else {//默认宽度
+            mWidth = dip2px(getContext(),150);
+        }
+        mHeight = mWidth;
+        Log.e("------------->", "width:" + mWidth);
         setMeasuredDimension(mWidth, mHeight);
     }
 
@@ -112,14 +135,34 @@ public class MyCycleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        int center = mWidth / 2;
+        int innerCircle = center; //设置内圆半径
+//        int ringWidth = dip2px(getContext(), 5); //设置圆环宽度
+
+        //绘制内圆
+//        this.paint.setARGB(155, 167, 190, 206);
+        paint.setColor(Color.RED);
+//        this.paint.setStrokeWidth(2);
+        canvas.drawCircle(center, center, innerCircle, paint);
+
+
+        /**这里是圆形图片*/
+//        super.onDraw(canvas);
         canvas.concat(matrix);
         //真实的半径必须是View的宽高最小值
-        radius = Math.min(mWidth, mHeight);
+//        radius = Math.min(mWidth, mHeight) - dip2px(getContext(),30);
+        int mBitmapWidth = dip2px(getContext(),80);
+
+        radius = Math.min(mBitmapWidth, mBitmapWidth);
         //如果图片本身宽高太大，进行相应的缩放
         bitmap = Bitmap.createScaledBitmap(bitmap, radius, radius, false);
         //画圆形图片
-        canvas.drawBitmap(createCircleImage(bitmap, radius), 0, 0, null);
+        mRect.left = (mWidth/2 - radius/2);
+        mRect.top = 0 + (mWidth/2 - radius/2);
+        mRect.right = 0 + (mWidth/2 +radius/2);
+        mRect.bottom = 0 + (mWidth/2 + radius/2);
+//        canvas.drawBitmap(createCircleImage(bitmap, radius), 0, 0, null);
+        canvas.drawBitmap(createCircleImage(bitmap, radius), null, mRect, null);
         matrix.reset();
 
 //        canvas.translate(200,200);
@@ -140,5 +183,13 @@ public class MyCycleView extends View {
         //绘制图片，从（0，0）画
         canvas.drawBitmap(source, 0, 0, paint);
         return target;
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }
