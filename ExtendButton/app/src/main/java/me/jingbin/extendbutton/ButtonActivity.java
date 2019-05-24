@@ -23,9 +23,9 @@ public class ButtonActivity extends AppCompatActivity {
     private ImageView imageView2;
     private ImageView imageView;
     private LinearLayout linearLayout;
+    private RelativeLayout relativeLayout;
     private boolean isStart = false;
     private boolean isFirst = true;
-    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class ButtonActivity extends AppCompatActivity {
         relativeLayout = findViewById(R.id.relativeLayout);
 
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isStart) {
